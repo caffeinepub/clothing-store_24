@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Crown, Instagram } from "lucide-react";
+import ShareWebsite from "./ShareWebsite";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -26,22 +27,26 @@ export default function Footer() {
               </span>
             </div>
             <p
-              className="text-sm leading-relaxed max-w-sm"
+              className="text-sm leading-relaxed max-w-sm mb-4"
               style={{ color: "oklch(0.6 0.04 80)" }}
             >
               Luxury fashion for the royally inclined. Every piece is crafted to
               make you feel like the royalty you are.
             </p>
             <a
-              href="https://instagram.com/ds.trending"
+              href="https://www.instagram.com/d_naruto_king"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-4 transition-colors hover:text-primary"
+              className="inline-flex items-center gap-2 mb-4 transition-colors hover:text-primary"
               style={{ color: "oklch(0.82 0.16 75)" }}
             >
               <Instagram className="h-5 w-5" />
-              <span className="text-sm font-medium">@ds.trending</span>
+              <span className="text-sm font-medium">@d_naruto_king</span>
             </a>
+            {/* Share button in footer */}
+            <div className="mt-2">
+              <ShareWebsite variant="full" />
+            </div>
           </div>
 
           {/* Quick Links */}

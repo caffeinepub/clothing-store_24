@@ -13,6 +13,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { useInternetIdentity } from "../hooks/useInternetIdentity";
 import { useCart, useIsAdmin } from "../hooks/useQueries";
+import ShareWebsite from "./ShareWebsite";
 
 export default function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -88,7 +89,12 @@ export default function Navigation() {
         </nav>
 
         {/* Right side actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          {/* Share button (desktop) */}
+          <div className="hidden md:block">
+            <ShareWebsite variant="icon" />
+          </div>
+
           {/* Sign In / Sign Out button */}
           {identity ? (
             <button
@@ -199,9 +205,17 @@ export default function Navigation() {
                 </Link>
               )}
 
+              {/* Mobile Share button */}
+              <div
+                className="pt-1 border-t"
+                style={{ borderColor: "oklch(0.28 0.07 295)" }}
+              >
+                <ShareWebsite variant="full" />
+              </div>
+
               {/* Mobile Sign In / Sign Out */}
               <div
-                className="pt-2 border-t"
+                className="border-t"
                 style={{ borderColor: "oklch(0.28 0.07 295)" }}
               >
                 {identity ? (

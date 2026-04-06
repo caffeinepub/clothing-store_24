@@ -9,14 +9,14 @@ import List "mo:core/List";
 import Array "mo:core/Array";
 import OutCall "http-outcalls/outcall";
 import Runtime "mo:core/Runtime";
-import Migration "migration";
+
 import Principal "mo:core/Principal";
 import Int "mo:core/Int";
 import MixinAuthorization "authorization/MixinAuthorization";
 import AccessControl "authorization/access-control";
 
 // Use migration on upgrade
-(with migration = Migration.run)
+
 actor {
   // Custom Types
   public type DeliveryAddress = {
@@ -118,8 +118,8 @@ actor {
   let userProfiles = Map.empty<Principal, UserProfile>();
 
   var aboutPage : AboutPage = {
-    instagramHandle = "@clothingstore";
-    aboutText = "Welcome to our clothing store!";
+    instagramHandle = "d_naruto_king";
+    aboutText = "We are DS Trending Store — a luxury fashion brand born from a love of regal elegance and modern style. Our collections draw inspiration from royal courts and haute couture, bringing you pieces that make every day feel like a coronation.";
   };
 
   var orderCounter = 0;
@@ -639,3 +639,4 @@ actor {
     };
   };
 };
+

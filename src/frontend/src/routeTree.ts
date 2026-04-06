@@ -1,6 +1,7 @@
 import { createRootRoute, createRoute } from "@tanstack/react-router";
 import RootLayout from "./layouts/RootLayout";
 import AboutPage from "./pages/AboutPage";
+import AdminDashboardPage from "./pages/AdminDashboardPage";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import HomePage from "./pages/HomePage";
@@ -47,6 +48,12 @@ const successRoute = createRoute({
   component: SuccessPage,
 });
 
+const adminRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin",
+  component: AdminDashboardPage,
+});
+
 export const routeTree = rootRoute.addChildren([
   homeRoute,
   shopRoute,
@@ -54,4 +61,5 @@ export const routeTree = rootRoute.addChildren([
   cartRoute,
   checkoutRoute,
   successRoute,
+  adminRoute,
 ]);

@@ -12,14 +12,29 @@ import {
 
 const SKELETON_KEYS = ["sk-a", "sk-b", "sk-c", "sk-d"];
 
+// Royal Color Premium Shirt - Featured product
+const SHIRT_PRODUCT = {
+  id: "shirt-royal-001",
+  name: "Royal Color Premium Shirt",
+  category: "shirts",
+  price: BigInt(30000), // ₹300 in paise
+  salePrice: undefined as bigint | undefined,
+  isOnSale: false,
+  imageUrl: "/assets/generated/product-royal-shirt.dim_600x750.png",
+  description:
+    "Ek premium quality royal shirt jo aapko ek alag hi andaaz deta hai -- vibrant color, superior fabric, aur unmatched style. Yeh shirt aapki personality ko define karta hai.",
+  stockQuantity: BigInt(50),
+};
+
 // Fallback local products for when store is loading/empty
 const FALLBACK_PRODUCTS = [
+  SHIRT_PRODUCT,
   {
     id: "f1",
     name: "Royal Velvet Evening Gown",
     category: "dresses",
-    price: BigInt(28900),
-    salePrice: undefined,
+    price: BigInt(289900),
+    salePrice: undefined as bigint | undefined,
     isOnSale: false,
     imageUrl: "/assets/generated/product-royal-dress.dim_600x750.jpg",
     description: "Exquisite velvet gown",
@@ -29,8 +44,8 @@ const FALLBACK_PRODUCTS = [
     id: "f2",
     name: "Gold Silk Blouse",
     category: "tops",
-    price: BigInt(14500),
-    salePrice: BigInt(10900),
+    price: BigInt(145000),
+    salePrice: BigInt(109000) as bigint | undefined,
     isOnSale: true,
     imageUrl: "/assets/generated/product-gold-blouse.dim_600x750.jpg",
     description: "Gold silk blouse",
@@ -40,30 +55,19 @@ const FALLBACK_PRODUCTS = [
     id: "f3",
     name: "Purple Velvet Blazer",
     category: "tops",
-    price: BigInt(22000),
-    salePrice: undefined,
+    price: BigInt(220000),
+    salePrice: undefined as bigint | undefined,
     isOnSale: false,
     imageUrl: "/assets/generated/product-royal-blazer.dim_600x750.jpg",
     description: "Rich velvet blazer",
     stockQuantity: BigInt(8),
-  },
-  {
-    id: "f4",
-    name: "Palazzo Trousers",
-    category: "bottoms",
-    price: BigInt(18900),
-    salePrice: BigInt(14900),
-    isOnSale: true,
-    imageUrl: "/assets/generated/product-palazzo-pants.dim_600x750.jpg",
-    description: "Wide-leg palazzo pants",
-    stockQuantity: BigInt(12),
   },
 ];
 
 const FALLBACK_PROMOTIONS = [
   {
     title: "Royal Summer Sale",
-    description: "Up to 40% off on selected evening wear",
+    description: "Up to 40% off on selected wear",
     discountInfo: "40% OFF",
     imageUrl: "",
   },
@@ -76,9 +80,9 @@ const FALLBACK_PROMOTIONS = [
 ];
 
 const CATEGORIES = [
+  { name: "Shirts", slug: "shirts", emoji: "👔" },
   { name: "Dresses", slug: "dresses", emoji: "👗" },
   { name: "Tops", slug: "tops", emoji: "✨" },
-  { name: "Bottoms", slug: "bottoms", emoji: "👔" },
   { name: "Accessories", slug: "accessories", emoji: "💎" },
 ];
 
@@ -129,7 +133,7 @@ export default function HomePage() {
               className="text-xs font-bold tracking-[0.4em] uppercase mb-4"
               style={{ color: "oklch(0.82 0.16 75)" }}
             >
-              ✦ DS Trending Store — New Collection 2026 ✦
+              ❖ DS Trending Store — New Collection 2026 ❖
             </p>
             <h1
               className="font-serif text-5xl md:text-7xl font-bold leading-tight mb-6"
@@ -218,6 +222,118 @@ export default function HomePage() {
           </div>
         </section>
       )}
+
+      {/* Featured Product - Royal Shirt */}
+      <section
+        className="py-20"
+        style={{ background: "oklch(0.12 0.045 295)" }}
+        data-ocid="featured.section"
+      >
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <p
+              className="text-xs font-bold tracking-[0.4em] uppercase mb-3"
+              style={{ color: "oklch(0.82 0.16 75)" }}
+            >
+              ❖ FEATURED PRODUCT
+            </p>
+            <h2
+              className="font-serif text-4xl font-bold"
+              style={{ color: "oklch(0.93 0.015 80)" }}
+            >
+              Iss Hafte Ka Star
+            </h2>
+          </motion.div>
+
+          <div className="flex flex-col md:flex-row items-center gap-12 max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="w-full md:w-1/2 max-w-sm mx-auto"
+            >
+              <div
+                className="rounded-2xl overflow-hidden border-2"
+                style={{ borderColor: "oklch(0.78 0.14 75)" }}
+              >
+                <img
+                  src="/assets/generated/product-royal-shirt.dim_600x750.png"
+                  alt="Royal Color Premium Shirt"
+                  className="w-full object-cover"
+                />
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="w-full md:w-1/2 flex flex-col gap-5"
+            >
+              <div>
+                <p
+                  className="text-xs font-bold tracking-[0.3em] uppercase mb-2"
+                  style={{ color: "oklch(0.78 0.14 75)" }}
+                >
+                  SHIRTS
+                </p>
+                <h3
+                  className="font-serif text-3xl font-bold mb-3"
+                  style={{ color: "oklch(0.93 0.015 80)" }}
+                >
+                  Royal Color Premium Shirt
+                </h3>
+                <p
+                  className="text-base leading-relaxed"
+                  style={{ color: "oklch(0.75 0.03 80)" }}
+                >
+                  Ek premium quality royal shirt jo aapko ek alag hi andaaz deta
+                  hai -- vibrant color, superior fabric, aur unmatched style.
+                  Yeh shirt aapki personality ko define karta hai.
+                </p>
+              </div>
+              <div className="flex items-center gap-4">
+                <span
+                  className="font-bold text-4xl"
+                  style={{ color: "oklch(0.82 0.16 75)" }}
+                >
+                  ₹300
+                </span>
+                <span
+                  className="text-sm px-3 py-1 rounded-full font-bold"
+                  style={{
+                    background: "oklch(0.22 0.08 75)",
+                    color: "oklch(0.82 0.16 75)",
+                  }}
+                >
+                  PREMIUM
+                </span>
+              </div>
+              <Button
+                asChild
+                size="lg"
+                className="font-bold tracking-widest uppercase w-full h-14 text-base mt-2"
+                style={{
+                  background: "oklch(0.78 0.14 75)",
+                  color: "oklch(0.12 0.04 295)",
+                  border: "none",
+                }}
+                data-ocid="featured.primary_button"
+              >
+                <Link to="/shop">Abhi Kharido</Link>
+              </Button>
+            </motion.div>
+          </div>
+        </div>
+      </section>
 
       {/* Categories */}
       <section className="py-20" data-ocid="categories.section">
@@ -414,7 +530,7 @@ export default function HomePage() {
             Up to 40% Off
           </p>
           <p className="text-xl mb-8" style={{ color: "oklch(0.85 0.03 80)" }}>
-            On our exclusive DS Trending Collection — this season only
+            DS Trending Collection par — sirf is season ke liye
           </p>
           <Button
             asChild
@@ -427,7 +543,7 @@ export default function HomePage() {
             }}
             data-ocid="promo-banner.primary_button"
           >
-            <Link to="/shop">Shop the Sale</Link>
+            <Link to="/shop">Sale Dekho</Link>
           </Button>
         </motion.div>
       </section>

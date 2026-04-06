@@ -23,11 +23,16 @@ const VALUES = [
 ];
 
 export default function AboutPage() {
-  const { data: aboutPage, isLoading } = useAboutPage();
+  const { data: aboutPageData, isLoading } = useAboutPage();
 
-  const instagramHandle = aboutPage?.instagramHandle || "d_naruto_king";
+  // Strip leading '@' if present, then use as handle
+  const rawHandle = aboutPageData?.instagramHandle || "d_naruto_king";
+  const instagramHandle = rawHandle.startsWith("@")
+    ? rawHandle.slice(1)
+    : rawHandle;
+
   const aboutText =
-    aboutPage?.aboutText ||
+    aboutPageData?.aboutText ||
     "We are DS Trending Store — a luxury fashion brand born from a love of regal elegance and modern style. Our collections draw inspiration from royal courts and haute couture, bringing you pieces that make every day feel like a coronation.";
 
   return (
@@ -70,6 +75,14 @@ export default function AboutPage() {
           >
             About DS Trending Store
           </h1>
+          {/* Tagline */}
+          <p
+            className="font-serif text-xl md:text-2xl italic mb-6 max-w-2xl mx-auto"
+            style={{ color: "oklch(0.82 0.16 75)" }}
+          >
+            DS Trending Store – Fashion jo trend banaye, style jo aapko define
+            kare.
+          </p>
           <div
             className="max-w-2xl mx-auto h-px mb-6"
             style={{
@@ -200,7 +213,7 @@ export default function AboutPage() {
                   data-ocid="about.primary_button"
                 >
                   <a
-                    href={`https://instagram.com/${instagramHandle}`}
+                    href={`https://www.instagram.com/${instagramHandle}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

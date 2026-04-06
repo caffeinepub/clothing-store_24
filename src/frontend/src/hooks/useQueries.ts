@@ -3,6 +3,8 @@ import type {
   AboutPage,
   CartItem,
   DeliveryAddress,
+  OrderRecord,
+  OrderStatus,
   Product,
   Promotion,
   ShoppingItem,
@@ -205,5 +207,49 @@ export function useStoreConfig() {
       return actor.getStoreConfig();
     },
     enabled: !!actor && !isFetching,
+  });
+}
+
+// Admin hooks
+export function useIsAdmin() {
+  const { actor, isFetching } = useActor();
+  return useQuery<boolean>({
+    queryKey: ["isAdmin"],
+    queryFn: async () => {
+      if (!actor) return false;
+      return actor.isCallerAdmin();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+export function useAdminOrders() {
+  const { actor, isFetching } = useActor();
+  const { data: isAdmin } = useIsAdmin();
+  return useQuery<OrderRecord[]>({
+    queryKey: ["adminOrders"],
+    queryFn: async () => {
+      if (!actor) return [];
+      return actor.getOrdersAdmin();
+    },
+    enabled: !!actor && !isFetching && isAdmin === true,
+    refetchInterval: 30_000, // auto-refresh every 30 seconds
+  });
+}
+
+export function useUpdateOrderStatus() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      orderId,
+      newStatus,
+    }: { orderId: string; newStatus: OrderStatus }) => {
+      if (!actor) throw new Error("No actor");
+      await actor.updateOrderStatus(orderId, newStatus);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["adminOrders"] });
+    },
   });
 }

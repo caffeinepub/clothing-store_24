@@ -3,13 +3,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Product } from "../backend.d";
 import ProductCard from "../components/ProductCard";
 import { useProductsByCategory } from "../hooks/useQueries";
 
 const CATEGORIES = [
   { label: "All", value: "all" },
+  { label: "Shirts", value: "shirts" },
   { label: "Tops", value: "tops" },
   { label: "Bottoms", value: "bottoms" },
   { label: "Dresses", value: "dresses" },
@@ -29,10 +30,22 @@ const SKELETON_KEYS = [
 
 const FALLBACK_PRODUCTS: Product[] = [
   {
+    id: "shirt-royal-001",
+    name: "Royal Color Premium Shirt",
+    category: "shirts",
+    price: BigInt(30000),
+    salePrice: undefined,
+    isOnSale: false,
+    imageUrl: "/assets/generated/product-royal-shirt.dim_600x750.png",
+    description:
+      "Ek premium quality royal shirt jo aapko ek alag hi andaaz deta hai -- vibrant color, superior fabric, aur unmatched style.",
+    stockQuantity: BigInt(50),
+  },
+  {
     id: "f1",
     name: "Royal Velvet Evening Gown",
     category: "dresses",
-    price: BigInt(28900),
+    price: BigInt(289900),
     salePrice: undefined,
     isOnSale: false,
     imageUrl: "/assets/generated/product-royal-dress.dim_600x750.jpg",
@@ -43,8 +56,8 @@ const FALLBACK_PRODUCTS: Product[] = [
     id: "f2",
     name: "Gold Silk Blouse",
     category: "tops",
-    price: BigInt(14500),
-    salePrice: BigInt(10900),
+    price: BigInt(145000),
+    salePrice: BigInt(109000),
     isOnSale: true,
     imageUrl: "/assets/generated/product-gold-blouse.dim_600x750.jpg",
     description: "Luxurious gold silk blouse",
@@ -54,7 +67,7 @@ const FALLBACK_PRODUCTS: Product[] = [
     id: "f3",
     name: "Purple Velvet Blazer",
     category: "tops",
-    price: BigInt(22000),
+    price: BigInt(220000),
     salePrice: undefined,
     isOnSale: false,
     imageUrl: "/assets/generated/product-royal-blazer.dim_600x750.jpg",
@@ -65,8 +78,8 @@ const FALLBACK_PRODUCTS: Product[] = [
     id: "f4",
     name: "Palazzo Trousers",
     category: "bottoms",
-    price: BigInt(18900),
-    salePrice: BigInt(14900),
+    price: BigInt(189000),
+    salePrice: BigInt(149000),
     isOnSale: true,
     imageUrl: "/assets/generated/product-palazzo-pants.dim_600x750.jpg",
     description: "Wide-leg palazzo pants",
@@ -76,7 +89,7 @@ const FALLBACK_PRODUCTS: Product[] = [
     id: "f5",
     name: "Jeweled Statement Necklace",
     category: "accessories",
-    price: BigInt(9500),
+    price: BigInt(95000),
     salePrice: undefined,
     isOnSale: false,
     imageUrl: "/assets/generated/product-royal-necklace.dim_600x750.jpg",
@@ -87,8 +100,8 @@ const FALLBACK_PRODUCTS: Product[] = [
     id: "f6",
     name: "Royal Pleated Mini Skirt",
     category: "bottoms",
-    price: BigInt(12900),
-    salePrice: BigInt(9900),
+    price: BigInt(129000),
+    salePrice: BigInt(99000),
     isOnSale: true,
     imageUrl: "/assets/generated/product-royal-skirt.dim_600x750.jpg",
     description: "Elegant pleated mini skirt",
@@ -99,8 +112,21 @@ const FALLBACK_PRODUCTS: Product[] = [
 export default function ShopPage() {
   const [category, setCategory] = useState("all");
   const [search, setSearch] = useState("");
+  const [timedOut, setTimedOut] = useState(false);
 
-  const { data: products, isLoading } = useProductsByCategory(category);
+  const {
+    data: products,
+    isLoading,
+    isFetching,
+  } = useProductsByCategory(category);
+
+  // After 3 seconds, stop showing skeleton and use fallback products
+  useEffect(() => {
+    const timer = setTimeout(() => setTimedOut(true), 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const showSkeleton = (isLoading || isFetching) && !timedOut;
 
   const displayProducts =
     products && products.length > 0 ? products : FALLBACK_PRODUCTS;
@@ -200,11 +226,11 @@ export default function ShopPage() {
             style={{ color: "oklch(0.65 0.06 75)" }}
           />
           <span className="text-sm" style={{ color: "oklch(0.65 0.04 80)" }}>
-            {isLoading ? "Loading..." : `${filtered.length} pieces`}
+            {showSkeleton ? "Loading..." : `${filtered.length} pieces`}
           </span>
         </div>
 
-        {isLoading ? (
+        {showSkeleton ? (
           <div
             className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
             data-ocid="shop.loading_state"

@@ -1,13 +1,24 @@
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@tanstack/react-router";
-import { Crown, Menu, ShoppingCart, X } from "lucide-react";
+import {
+  Crown,
+  LayoutDashboard,
+  LogIn,
+  LogOut,
+  Menu,
+  ShoppingCart,
+  X,
+} from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
-import { useCart } from "../hooks/useQueries";
+import { useInternetIdentity } from "../hooks/useInternetIdentity";
+import { useCart, useIsAdmin } from "../hooks/useQueries";
 
 export default function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { data: cartItems } = useCart();
+  const { data: isAdmin } = useIsAdmin();
+  const { identity, login, clear } = useInternetIdentity();
 
   const cartCount =
     cartItems?.reduce((sum, item) => sum + Number(item.quantity), 0) ?? 0;
@@ -62,10 +73,54 @@ export default function Navigation() {
               {link.label}
             </Link>
           ))}
+          {isAdmin && (
+            <Link
+              to="/admin"
+              className="flex items-center gap-1.5 text-sm font-bold tracking-widest uppercase transition-colors"
+              style={{ color: "oklch(0.82 0.16 75)" }}
+              activeProps={{ style: { color: "oklch(0.95 0.18 75)" } }}
+              data-ocid="nav.link"
+            >
+              <LayoutDashboard className="h-4 w-4" />
+              Admin
+            </Link>
+          )}
         </nav>
 
-        {/* Cart Icon */}
-        <div className="flex items-center gap-4">
+        {/* Right side actions */}
+        <div className="flex items-center gap-3">
+          {/* Sign In / Sign Out button */}
+          {identity ? (
+            <button
+              type="button"
+              onClick={() => clear()}
+              className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold tracking-wide uppercase border transition-colors hover:bg-secondary"
+              style={{
+                borderColor: "oklch(0.82 0.16 75 / 0.5)",
+                color: "oklch(0.82 0.16 75)",
+              }}
+              data-ocid="nav.toggle"
+            >
+              <LogOut className="h-4 w-4" />
+              Sign Out
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => login()}
+              className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold tracking-wide uppercase transition-opacity hover:opacity-90"
+              style={{
+                background: "oklch(0.78 0.14 75)",
+                color: "oklch(0.12 0.04 295)",
+              }}
+              data-ocid="nav.toggle"
+            >
+              <LogIn className="h-4 w-4" />
+              Sign In
+            </button>
+          )}
+
+          {/* Cart Icon */}
           <Link
             to="/cart"
             className="relative p-2 rounded-full transition-colors hover:bg-secondary"
@@ -131,6 +186,57 @@ export default function Navigation() {
                   {link.label}
                 </Link>
               ))}
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className="flex items-center gap-2 text-base font-bold tracking-widest uppercase py-2"
+                  style={{ color: "oklch(0.82 0.16 75)" }}
+                  onClick={() => setMobileOpen(false)}
+                  data-ocid="nav.link"
+                >
+                  <LayoutDashboard className="h-5 w-5" />
+                  Admin Dashboard
+                </Link>
+              )}
+
+              {/* Mobile Sign In / Sign Out */}
+              <div
+                className="pt-2 border-t"
+                style={{ borderColor: "oklch(0.28 0.07 295)" }}
+              >
+                {identity ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      clear();
+                      setMobileOpen(false);
+                    }}
+                    className="flex items-center gap-2 text-base font-semibold tracking-widest uppercase py-2 w-full transition-colors"
+                    style={{ color: "oklch(0.82 0.16 75)" }}
+                    data-ocid="nav.toggle"
+                  >
+                    <LogOut className="h-5 w-5" />
+                    Sign Out
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      login();
+                      setMobileOpen(false);
+                    }}
+                    className="flex items-center gap-2 text-base font-bold tracking-widest uppercase py-2 px-4 rounded-lg w-full transition-opacity hover:opacity-90"
+                    style={{
+                      background: "oklch(0.78 0.14 75)",
+                      color: "oklch(0.12 0.04 295)",
+                    }}
+                    data-ocid="nav.toggle"
+                  >
+                    <LogIn className="h-5 w-5" />
+                    Sign In
+                  </button>
+                )}
+              </div>
             </nav>
           </motion.div>
         )}
